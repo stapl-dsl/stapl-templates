@@ -8,4 +8,6 @@ trait RBACTemplate extends Template {
   
   // add the roles attribute
   subject.roles = ListAttribute(RoleType)
+  
+  // no methods to define here
 }
