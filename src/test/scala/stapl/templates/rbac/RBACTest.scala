@@ -28,7 +28,6 @@ import stapl.core.pdp.RequestCtx
 import org.junit.Assert._
 import stapl.core._
 import org.scalatest.junit.AssertionsForJUnit
-import stapl.templates.rbac._
 import stapl.core.templates._
 
 object RBACTest {
