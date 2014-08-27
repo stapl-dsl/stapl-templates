@@ -17,7 +17,7 @@
  *    Technical Contact: maarten.decat@cs.kuleuven.be
  *    Author: maarten.decat@cs.kuleuven.be
  */
-package stapl.templates.rbac.tests
+package stapl.templates.rbac
 
 import org.junit.Before
 import org.junit.BeforeClass
