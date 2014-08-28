@@ -6,3 +6,5 @@ This project provides policy templates that encapsulate common policy patterns i
 For more information about STAPL in general, see the [main STAPL project][1].
 
 For examples of using policy templates, see https://github.com/maartendecat/stapl-examples/tree/master/src/main/scala/stapl/examples/templates
+
+ [1]: https://github.com/maartendecat/stapl
