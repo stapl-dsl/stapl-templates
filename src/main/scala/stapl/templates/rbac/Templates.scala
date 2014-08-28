@@ -3,11 +3,29 @@ package stapl.templates.rbac
 import stapl.templates.Template
 import stapl.core.ListAttribute
 import stapl.core.pdp.EvaluationCtx
+import stapl.core.AbstractPolicy
+import stapl.core.Rule
+import stapl.core.AlwaysTrue
+import stapl.core.Deny
+import stapl.core.Expression
+import stapl.core.And
+import stapl.core.Not
 
-trait RBACTemplate extends Template {
+trait Roles extends Template {  
   
   // add the roles attribute
   subject.roles = ListAttribute(RoleType)
   
-  // no methods to define here
+  def denyIfNotOneOf(roles: Role*): AbstractPolicy = {
+    var condition: Expression = AlwaysTrue
+    for(role <- roles) {
+      condition = And(condition, subject.hasRole(role))
+    }
+    condition = Not(condition)
+    new Rule("denyIfNotOneOf")(
+        target = AlwaysTrue,
+        effect = Deny,
+        condition = condition
+    )
+  } 
 }

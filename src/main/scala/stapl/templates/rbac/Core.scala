@@ -21,6 +21,11 @@ object Permission {
  * of its ancestors.
  * 
  * TODO extend this to graph-structured role hierarchy?
+ * 
+ * Note that the name of a role will be redundant in most policies since
+ * the role will be used as a variable. However, the name of a role is necessary
+ * for debugging purposes. Moreover, the roles should be defined only once by
+ * a security specialist, so this should not bother too much. 
  */
 class Role(val name: String, val parent: Option[Role], val permissions: Permission*) {
   

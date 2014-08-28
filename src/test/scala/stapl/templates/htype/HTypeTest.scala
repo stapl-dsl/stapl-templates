@@ -28,7 +28,6 @@ import stapl.core.pdp.RequestCtx
 import org.junit.Assert._
 import stapl.core._
 import org.scalatest.junit.AssertionsForJUnit
-import stapl.core.templates._
 
 object HTypeTest {
 
@@ -39,7 +38,7 @@ object HTypeTest {
 /**
  *
  */
-class HTypeTest extends AssertionsForJUnit with BasicPolicy with HTypeTempate {
+class HTypeTest extends AssertionsForJUnit with BasicPolicy with HTypes {
 
   // construct the type hierarchy:
   //
@@ -56,7 +55,7 @@ class HTypeTest extends AssertionsForJUnit with BasicPolicy with HTypeTempate {
 
   val policy = Policy("permit only") := apply PermitOverrides to(
     Rule("htype test") := permit iff (resource.hasType(personalDetails)),
-    defaultDeny)
+    Rule("default deny") := deny)
 
   // for the policies below
   subject.role = SimpleAttribute(String)

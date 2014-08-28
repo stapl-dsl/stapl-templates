@@ -28,7 +28,6 @@ import stapl.core.pdp.RequestCtx
 import org.junit.Assert._
 import stapl.core._
 import org.scalatest.junit.AssertionsForJUnit
-import stapl.core.templates._
 
 object RBACTest {
 
@@ -39,7 +38,7 @@ object RBACTest {
 /**
  *
  */
-class RBACTest extends AssertionsForJUnit with BasicPolicy with RBACTemplate {
+class RBACTest extends AssertionsForJUnit with BasicPolicy with Roles {
 
   // construct the Role hierarchy
   val read = Permission("read")
@@ -50,11 +49,11 @@ class RBACTest extends AssertionsForJUnit with BasicPolicy with RBACTemplate {
 
   val permissionPolicy: AbstractPolicy = Policy("permit only") := apply PermitOverrides to(
     Rule("rbac test") := permit iff (subject.hasPermission(read)),
-    defaultDeny)
+    Rule("default deny") := deny)
 
   val rolePolicy: AbstractPolicy = Policy("permit only") := apply PermitOverrides to(
     Rule("rbac test") := permit iff (subject.hasRole(phd)),
-    defaultDeny)
+    Rule("default deny") := deny)
 
   @Before def setup() {
     // nothing to do
