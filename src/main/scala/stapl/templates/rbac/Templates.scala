@@ -1,6 +1,5 @@
 package stapl.templates.rbac
 
-import stapl.templates.Template
 import stapl.core.ListAttribute
 import stapl.core.pdp.EvaluationCtx
 import stapl.core.AbstractPolicy
@@ -10,8 +9,9 @@ import stapl.core.Deny
 import stapl.core.Expression
 import stapl.core.And
 import stapl.core.Not
+import stapl.core.BasicPolicy
 
-trait Roles extends Template {  
+trait Roles extends BasicPolicy {  
   
   // add the roles attribute
   subject.roles = ListAttribute(RoleType)

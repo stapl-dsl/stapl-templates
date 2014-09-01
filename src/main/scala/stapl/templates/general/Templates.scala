@@ -2,20 +2,19 @@ package stapl.templates.general
 
 // See stapl.core.templates
 
-import stapl.templates.Template
 import stapl.core._
 
-trait ResourceOwners extends Template {
+trait ResourceOwners extends BasicPolicy {
   
   resource.owner = SimpleAttribute(String)
 }
 
-trait Time extends Template {
+trait Time extends BasicPolicy {
   
   environment.currentDateTime = SimpleAttribute(DateTime)
 }
 
-trait Location extends Template {
+trait Location extends BasicPolicy {
   
   subject.location = SimpleAttribute(String)
 }

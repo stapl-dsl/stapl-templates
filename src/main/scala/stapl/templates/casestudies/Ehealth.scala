@@ -2,7 +2,6 @@ package stapl.templates.casestudies
 
 import stapl.core.SubjectAttributeContainer
 import stapl.core._
-import stapl.templates.Template
 import stapl.templates.general.ResourceOwners
 import stapl.templates.general.Location
 import stapl.templates.rbac._
@@ -21,7 +20,7 @@ trait Treating extends ResourceOwners {
     Rule("treating-owner") := deny iff (!(resource.owner in subject.treating))
 }
 
-trait Shifts extends Template {
+trait Shifts extends BasicPolicy {
 
   subject.shift_start = SimpleAttribute(DateTime)
   subject.shift_stop = SimpleAttribute(DateTime)
@@ -31,7 +30,7 @@ trait Shifts extends Template {
     Rule("has-shift") := deny iff !((environment.currentDateTime gteq subject.shift_start) & (environment.currentDateTime lteq subject.shift_stop))
 }
 
-trait Consent extends Template {
+trait Consent extends BasicPolicy {
 
 }
 
