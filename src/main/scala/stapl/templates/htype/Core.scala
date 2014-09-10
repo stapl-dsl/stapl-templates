@@ -12,8 +12,8 @@ class HType(val name: String, val parent: Option[HType]) {
    * of this type.
    */
   def is(htype: HType): Boolean = {
-    if(this == htype) return true // TODO why does this have to be an explicit "return"
-    parent match {
+    if(this == htype) true // XXX why does this have to be an explicit "return"
+    else parent match {
       case Some(p) => p.is(htype)
       case None => false
     }

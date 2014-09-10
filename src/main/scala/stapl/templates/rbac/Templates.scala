@@ -13,6 +13,7 @@ import stapl.core.BasicPolicy
 import stapl.core.Or
 import stapl.core.AlwaysFalse
 
+// TODO should these traits extend BasicPolicy or declare a self type?
 trait Roles extends BasicPolicy {  
   
   // add the roles attribute

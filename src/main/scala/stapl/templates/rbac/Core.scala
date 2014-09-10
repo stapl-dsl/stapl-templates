@@ -40,10 +40,10 @@ class Role(val name: String, val parent: Option[Role], val permissions: Permissi
    */
   def hasPermission(permission: Permission): Boolean = {
     if(hasPermissionDirectly(permission)) {
-      return true // TODO why does this have to be an explicit "return"
+      true // XXX why does this have to be an explicit "return"
     }
     // look in the ancestors
-    parent match {
+    else parent match {
       case Some(p) => p.hasPermission(permission)
       case None => false
     }
@@ -54,8 +54,8 @@ class Role(val name: String, val parent: Option[Role], val permissions: Permissi
    * This role itself is included in the list of ancestors of this role.
    */
   def containsRole(role: Role): Boolean = {
-    if(this == role) return true // TODO why does this have to be an explicit "return"  
-    parent match {
+    if(this == role) true // XXX why does this have to be an explicit "return"  
+    else parent match {
       case Some(p) => p.containsRole(role)
       case None => false
     }

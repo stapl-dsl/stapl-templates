@@ -18,10 +18,11 @@ case class RoleIn(role: Value, roles: Value) extends Expression {
     val realRole: Role = concreteRole.representation.asInstanceOf[Role]
     val realRoles: Seq[Role] = concreteRoles.representation.asInstanceOf[Seq[Role]]
     // now iterate over the roles to check whether the given role is in there
-    for(r <- realRoles) {
-      if(r.containsRole(realRole)) return true // TODO why does this have to be an explicit "return" 
+    realRoles.exists(_.containsRole(realRole))
+    /*for(r <- realRoles) {
+      if(r.containsRole(realRole)) return true // XXX why does this have to be an explicit "return" 
     }
-    false
+    false*/
   }
 }
 
@@ -37,9 +38,10 @@ case class PermissionIn(permission: Value, roles: Value) extends Expression {
     val realPermission: Permission = concretePermission.representation.asInstanceOf[Permission]
     val realRoles: Seq[Role] = concreteRoles.representation.asInstanceOf[Seq[Role]]
     // now iterate over the roles to check whether the given role is in there
-    for(r <- realRoles) {
-      if(r.hasPermission(realPermission)) return true // TODO why does this have to be an explicit "return"
+    realRoles.exists(_.hasPermission(realPermission))
+    /*for(r <- realRoles) {
+      if(r.hasPermission(realPermission)) return true // XXX why does this have to be an explicit "return"
     }
-    false
+    false*/
   }
 }
