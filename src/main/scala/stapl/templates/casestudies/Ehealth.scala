@@ -11,7 +11,7 @@ import stapl.templates.general.GeneralTemplates
 
 trait Treating extends ResourceOwners {
 
-  subject.treating = ListAttribute(String)
+  subject.treated = ListAttribute(String)
 
   /**
    *
@@ -26,12 +26,11 @@ trait Shifts extends BasicPolicy {
   subject.shift_stop = SimpleAttribute(DateTime)
   environment.currentDateTime = SimpleAttribute(DateTime)
 
-  def testHasShift(subject: SubjectAttributeContainer): AbstractPolicy =
-    Rule("has-shift") := deny iff !((environment.currentDateTime gteq subject.shift_start) & (environment.currentDateTime lteq subject.shift_stop))
-}
-
-trait Consent extends BasicPolicy {
-
+  class SubjectWithShifts(subject: SubjectAttributeContainer) {
+	def onShift: Expression =
+			(environment.currentDateTime gteq subject.shift_start) & (environment.currentDateTime lteq subject.shift_stop)
+  }
+  implicit def subject2SubjectWithShifts(subject: SubjectAttributeContainer) = new SubjectWithShifts(subject)
 }
 
 /**
@@ -105,5 +104,13 @@ trait HospitalPolicy extends BasicPolicy with GeneralTemplates with Roles with T
   subject.admitted_patients_in_nurse_unit = ListAttribute(String)
   subject.allowed_to_access_pms = SimpleAttribute(Bool)
   subject.responsible_patients = ListAttribute(String)
+  
+  /**
+   * Consent
+   */
+  def denyIfNotConsent = Policy("policy:1") := when (subject.hasRole(medical_personel)) apply PermitOverrides to (
+        Rule("consent") := deny iff (subject.id in resource.owner_withdrawn_consents),
+        Rule("breaking-glass") := permit iff (subject.triggered_breaking_glass) performing (log(subject.id + " performed breaking-the-glass procedure"))
+    ) performing (log("permit because of breaking-the-glass procedure") on Permit)
 
 }

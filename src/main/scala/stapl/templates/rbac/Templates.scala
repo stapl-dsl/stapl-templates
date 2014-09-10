@@ -10,6 +10,8 @@ import stapl.core.Expression
 import stapl.core.And
 import stapl.core.Not
 import stapl.core.BasicPolicy
+import stapl.core.Or
+import stapl.core.AlwaysFalse
 
 trait Roles extends BasicPolicy {  
   
@@ -17,9 +19,9 @@ trait Roles extends BasicPolicy {
   subject.roles = ListAttribute(RoleType)
   
   def denyIfNotOneOf(roles: Role*): AbstractPolicy = {
-    var condition: Expression = AlwaysTrue
+    var condition: Expression = AlwaysFalse
     for(role <- roles) {
-      condition = And(condition, subject.hasRole(role))
+      condition = Or(condition, subject.hasRole(role))
     }
     condition = Not(condition)
     new Rule("denyIfNotOneOf")(

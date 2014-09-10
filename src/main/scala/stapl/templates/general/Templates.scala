@@ -27,18 +27,26 @@ trait GeneralTemplates {
   /**
    * TODO Actually, this is DenyIffNot
    */
-  def OnlyPermitIff(id: String)(target: Expression, condition: Expression): Policy =
+  def OnlyPermitIff(id: String)(target: Expression)(condition: Expression): Policy =
     Policy(id) := when(target) apply PermitOverrides to (
       Rule("OnlyPermitIff-condition") := permit iff (condition),
       Rule("OnlyPermitIff-deny") := deny)
+  def OnlyPermitIff(target: Expression, condition: Expression): Policy =
+    OnlyPermitIff("only-permit-iff")(target)(condition)
+  def OnlyPermitIff(condition: Expression): Policy =
+    OnlyPermitIff("only-permit-iff")(AlwaysTrue)(condition)
 
   /**
    * TODO Actually, this is PermitIffNot
    */
-  def OnlyDenyIff(id: String)(target: Expression, condition: Expression): Policy =
+  def OnlyDenyIff(id: String)(target: Expression)(condition: Expression): Policy =
     Policy(id) := when(target) apply DenyOverrides to (
       Rule("OnlyDenyIff-condition") := deny iff (condition),
       Rule("OnlyDenyIff-permit") := permit)
+  def OnlyDenyIff(target: Expression, condition: Expression): Policy =
+    OnlyDenyIff("only-permit-iff")(target)(condition)
+  def OnlyDenyIff(condition: Expression): Policy =
+    OnlyDenyIff("only-permit-iff")(AlwaysTrue)(condition)
 
   /**
    * Default permit with default id.
