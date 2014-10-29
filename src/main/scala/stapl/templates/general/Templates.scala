@@ -58,7 +58,6 @@ trait GeneralTemplates {
    */
   def defaultPermit(id: String): Rule =
     new Rule(id)(
-      target = AlwaysTrue,
       effect = Permit,
       condition = AlwaysTrue)
 
@@ -72,7 +71,6 @@ trait GeneralTemplates {
    */
   def defaultDeny(id: String): Rule =
     new Rule(id)(
-      target = AlwaysTrue,
       effect = Deny,
       condition = AlwaysTrue)
 

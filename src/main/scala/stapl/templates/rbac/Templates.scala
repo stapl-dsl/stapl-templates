@@ -26,7 +26,6 @@ trait Roles extends BasicPolicy {
     }
     condition = Not(condition)
     new Rule("denyIfNotOneOf")(
-        target = AlwaysTrue,
         effect = Deny,
         condition = condition
     )
