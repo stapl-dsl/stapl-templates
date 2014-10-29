@@ -4,14 +4,21 @@ package stapl.templates.general
 
 import stapl.core._
 
-trait ResourceOwners extends BasicPolicy {
-  
-  resource.owner = SimpleAttribute(String)
-}
-
 trait Time extends BasicPolicy {
   
   environment.currentDateTime = SimpleAttribute(DateTime)
+}
+
+trait Shifts extends Time {
+
+  subject.shift_start = SimpleAttribute(DateTime)
+  subject.shift_stop = SimpleAttribute(DateTime)
+
+  class SubjectWithShifts(subject: SubjectAttributeContainer) {
+	def onShift: Expression =
+			(environment.currentDateTime gteq subject.shift_start) & (environment.currentDateTime lteq subject.shift_stop)
+  }
+  implicit def subject2SubjectWithShifts(subject: SubjectAttributeContainer) = new SubjectWithShifts(subject)
 }
 
 trait Location extends BasicPolicy {
@@ -19,10 +26,21 @@ trait Location extends BasicPolicy {
   subject.location = SimpleAttribute(String)
 }
 
+trait ResourceCreation extends BasicPolicy {
+  
+  resource.created = SimpleAttribute(DateTime)
+  resource.creator = SimpleAttribute(String)
+}
+
+trait Ownership extends BasicPolicy {
+  
+  resource.owner_id = SimpleAttribute("owner:id", String)
+}
+
 /**
  * Package containing some policy templates which commonly occur in policies. 
  */
-trait GeneralTemplates {
+trait GeneralTemplates extends BasicPolicy {
 
   /**
    * TODO Actually, this is DenyIffNot
