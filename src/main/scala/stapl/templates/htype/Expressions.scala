@@ -4,20 +4,35 @@ import stapl.core.Value
 import stapl.core.Expression
 import stapl.core.pdp.EvaluationCtx
 import stapl.core.ConcreteValue
-
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
  * Returns whether type2 is a type1. This holds if type2 equals type1 or
  * if type1 is an ancestor of type2.
  */
 case class IsType(type1: Value, type2: Value) extends Expression {
-  
+
   override def evaluate(implicit ctx: EvaluationCtx): Boolean = {
-    val ConcreteValue(concreteType1) = type1
-    val ConcreteValue(concreteType2) = type2
+    val concreteType1 = type1.getConcreteValue(ctx)
+    val concreteType2 = type2.getConcreteValue(ctx)
     // FIXME possible casting exceptions here
     val realType1: HType = concreteType1.representation.asInstanceOf[HType]
     val realType2: HType = concreteType2.representation.asInstanceOf[HType]
     realType2.is(realType1)
+  }
+
+  override def evaluateAsync(implicit ctx: EvaluationCtx): Future[Boolean] = {
+    val f1 = type1.getConcreteValueAsync(ctx)
+    val f2 = type2.getConcreteValueAsync(ctx)
+    for {
+      concreteType1 <- f1
+      concreteType2 <- f2
+    } yield {
+      // FIXME possible casting exceptions here
+      val realType1: HType = concreteType1.representation.asInstanceOf[HType]
+      val realType2: HType = concreteType2.representation.asInstanceOf[HType]
+      realType2.is(realType1)
+    }
   }
 }
