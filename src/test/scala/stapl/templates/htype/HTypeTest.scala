@@ -39,7 +39,7 @@ object HTypeTest {
  *
  */
 class HTypeTest extends AssertionsForJUnit with BasicPolicy with HTypes {
-  
+
   import stapl.core.dsl._
 
   // construct the type hierarchy:
@@ -63,7 +63,7 @@ class HTypeTest extends AssertionsForJUnit with BasicPolicy with HTypes {
   subject.role = SimpleAttribute(String)
 
   // Medical Secretaries can access all administrative details except personal details
-  val policy2 = Policy("medical-secratary") := when (subject.role === "medical-secretary") apply DenyOverrides to (
+  val policy2 = Policy("medical-secratary") := when(subject.role === "medical-secretary") apply DenyOverrides to (
     Rule("") := permit iff (resource.hasType(administrativeDetails)),
     Rule("") := deny iff (resource.hasType(professionalDetails)))
 
@@ -74,23 +74,31 @@ class HTypeTest extends AssertionsForJUnit with BasicPolicy with HTypes {
   }
 
   @Test def testHType1() {
-    assert(pdp.evaluate("", "", "",
-      resource.htype -> administrativeDetails) === Result(Deny, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      resource.htype -> administrativeDetails)
+    assert(decision === Deny)
+    assert(obligations === List())
   }
 
   @Test def testHType2() {
-    assert(pdp.evaluate("", "", "",
-      resource.htype -> personalDetails) === Result(Permit, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      resource.htype -> personalDetails)
+    assert(decision === Permit)
+    assert(obligations === List())
   }
 
   @Test def testHType3() {
-    assert(pdp.evaluate("", "", "",
-      resource.htype -> contactDetails) === Result(Permit, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      resource.htype -> contactDetails)
+    assert(decision === Permit)
+    assert(obligations === List())
   }
 
   @Test def testHType4() {
-    assert(pdp.evaluate("", "", "",
-      resource.htype -> professionalDetails) === Result(Deny, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      resource.htype -> professionalDetails)
+    assert(decision === Deny)
+    assert(obligations === List())
   }
 
 }

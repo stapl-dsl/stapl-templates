@@ -63,38 +63,50 @@ class RBACTest extends AssertionsForJUnit with BasicPolicy with Roles {
 
   @Test def testPermission1() {
     val pdp = new PDP(permissionPolicy)
-    assert(pdp.evaluate("", "", "",
-      subject.roles -> List(student)) === Result(Deny, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      subject.roles -> List(student))
+    assert(decision === Deny)
+    assert(obligations === List())
   }
 
   @Test def testPermission2() {
     val pdp = new PDP(permissionPolicy)
-    assert(pdp.evaluate("", "", "",
-      subject.roles -> List(phd)) === Result(Permit, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      subject.roles -> List(phd))
+    assert(decision === Permit)
+    assert(obligations === List())
   }
 
   @Test def testPermission3() {
     val pdp = new PDP(permissionPolicy)
-    assert(pdp.evaluate("", "", "",
-      subject.roles -> List(prof)) === Result(Permit, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      subject.roles -> List(prof))
+    assert(decision === Permit)
+    assert(obligations === List())
   }
 
   @Test def testRole1() {
     val pdp = new PDP(rolePolicy)
-    assert(pdp.evaluate("", "", "",
-      subject.roles -> List(student)) === Result(Deny, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      subject.roles -> List(student))
+    assert(decision === Deny)
+    assert(obligations === List())
   }
 
   @Test def testRole2() {
     val pdp = new PDP(rolePolicy)
-    assert(pdp.evaluate("", "", "",
-      subject.roles -> List(phd)) === Result(Permit, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      subject.roles -> List(phd))
+    assert(decision === Permit)
+    assert(obligations === List())
   }
 
   @Test def testRole3() {
     val pdp = new PDP(rolePolicy)
-    assert(pdp.evaluate("", "", "",
-      subject.roles -> List(prof)) === Result(Permit, List()))
+    val Result(decision, obligations, employedAttributes) = pdp.evaluate("", "", "",
+      subject.roles -> List(prof))
+    assert(decision === Permit)
+    assert(obligations === List())
   }
 
 }
