@@ -42,6 +42,8 @@ trait BreakingGlass extends BasicPolicy {
  */
 trait Consent extends BreakingGlass {
   
+  import stapl.core.dsl._
+  
   resource.owner_withdrawn_consents = ListAttribute(String)
   
   def denyIfNotConsent(target: Expression = AlwaysTrue) = Policy("policy:1") := when (target) apply PermitOverrides to (

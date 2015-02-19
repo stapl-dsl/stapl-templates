@@ -39,6 +39,8 @@ object RBACTest {
  *
  */
 class RBACTest extends AssertionsForJUnit with BasicPolicy with Roles {
+  
+  import stapl.core.dsl._
 
   // construct the Role hierarchy
   val read = Permission("read")

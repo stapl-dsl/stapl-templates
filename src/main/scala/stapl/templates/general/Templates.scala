@@ -41,6 +41,8 @@ trait Ownership extends BasicPolicy {
  * Package containing some policy templates which commonly occur in policies. 
  */
 trait GeneralTemplates extends BasicPolicy {
+  
+  import stapl.core.dsl._
 
   /**
    * TODO Actually, this is DenyIffNot

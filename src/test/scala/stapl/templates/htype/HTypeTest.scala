@@ -39,6 +39,8 @@ object HTypeTest {
  *
  */
 class HTypeTest extends AssertionsForJUnit with BasicPolicy with HTypes {
+  
+  import stapl.core.dsl._
 
   // construct the type hierarchy:
   //

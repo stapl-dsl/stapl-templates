@@ -6,6 +6,7 @@ import stapl.core.pdp.EvaluationCtx
 import stapl.core.ConcreteValue
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Try, Success, Failure}
 
 /**
  *
@@ -26,12 +27,15 @@ case class RoleIn(role: Value, roles: Value) extends Expression {
     false*/
   }
 
-  override def evaluateAsync(implicit ctx: EvaluationCtx): Future[Boolean] = {
+  override def evaluateAsync(implicit ctx: EvaluationCtx): Future[Try[Boolean]] = {
     val f1 = role.getConcreteValueAsync(ctx)
     val f2 = role.getConcreteValueAsync(ctx)
     for {
-      concreteRole <- f1
-      concreteRoles <- f2
+      cr <- f1
+      crs <- f2
+    } yield for {
+      concreteRole <- cr
+      concreteRoles <- crs
     } yield {
       // FIXME possible casting exceptions here
       val realRole: Role = concreteRole.representation.asInstanceOf[Role]
@@ -61,12 +65,15 @@ case class PermissionIn(permission: Value, roles: Value) extends Expression {
     false*/
   }
 
-  override def evaluateAsync(implicit ctx: EvaluationCtx): Future[Boolean] = {
+  override def evaluateAsync(implicit ctx: EvaluationCtx): Future[Try[Boolean]] = {
     val f1 = permission.getConcreteValueAsync(ctx)
     val f2 = permission.getConcreteValueAsync(ctx)
     for {
-      concretePermission <- f1
-      concreteRoles <- f2
+      cp <- f1
+      cr <- f2
+    } yield for {
+      concretePermission <- cp
+      concreteRoles <- cr 
     } yield {
       // FIXME possible casting exceptions here
       val realPermission: Permission = concretePermission.representation.asInstanceOf[Permission]
