@@ -26,24 +26,6 @@ case class RoleIn(role: Value, roles: Value) extends Expression {
     }
     false*/
   }
-
-  override def evaluateAsync(implicit ctx: EvaluationCtx): Future[Try[Boolean]] = {
-    val f1 = role.getConcreteValueAsync(ctx)
-    val f2 = role.getConcreteValueAsync(ctx)
-    for {
-      cr <- f1
-      crs <- f2
-    } yield for {
-      concreteRole <- cr
-      concreteRoles <- crs
-    } yield {
-      // FIXME possible casting exceptions here
-      val realRole: Role = concreteRole.representation.asInstanceOf[Role]
-      val realRoles: Seq[Role] = concreteRoles.representation.asInstanceOf[Seq[Role]]
-      // now iterate over the roles to check whether the given role is in there
-      realRoles.exists(_.containsRole(realRole))
-    }
-  }
 }
 
 /**
@@ -63,23 +45,5 @@ case class PermissionIn(permission: Value, roles: Value) extends Expression {
       if(r.hasPermission(realPermission)) return true // XXX why does this have to be an explicit "return"
     }
     false*/
-  }
-
-  override def evaluateAsync(implicit ctx: EvaluationCtx): Future[Try[Boolean]] = {
-    val f1 = permission.getConcreteValueAsync(ctx)
-    val f2 = permission.getConcreteValueAsync(ctx)
-    for {
-      cp <- f1
-      cr <- f2
-    } yield for {
-      concretePermission <- cp
-      concreteRoles <- cr 
-    } yield {
-      // FIXME possible casting exceptions here
-      val realPermission: Permission = concretePermission.representation.asInstanceOf[Permission]
-      val realRoles: Seq[Role] = concreteRoles.representation.asInstanceOf[Seq[Role]]
-      // now iterate over the roles to check whether the given role is in there
-      realRoles.exists(_.hasPermission(realPermission))
-    }
   }
 }
